@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="pageholder">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border border-primary bg bg-white">
+                <div class="card-header bg-primary">
+                    <h3 class="card-title text-white">Reports</h3>
+                </div>
+
+                <div class="linkholder" class="border border-primary" style="margin:80px 30px 40px 30px">
+                    <table class="display" id="reportTable">
+
+                        <thead>
+                            <th>id</th>
+                            <th>Tracking Code</th>
+                            <th>Branch</th>
+                            <th>Sending Amount</th>
+                            <th>Fee</th>
+                            <th>Purpose</th>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="{% static 'js/custom/report.js' %}"></script>
+
+{% endblock %}

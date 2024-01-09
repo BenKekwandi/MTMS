@@ -6,6 +6,7 @@ from panel.models import BranchModel,TransactionModel,FeeModel
 from django.contrib.auth.models import User,Group
 from .serializer import *
 import datetime
+from django.contrib.auth.hashers import make_password
 
 class SendingAction(APIView):
     def post(self, request, *args, **kwargs):
@@ -137,8 +138,11 @@ class Staff(APIView):
             'last_name': request.data.get('last_name'),
             'email': request.data.get('email'),
             'username': request.data.get('username'),
-            'password': request.data.get('password'),
-            'status':1
+            'password': make_password(request.data.get('password')),
+            'date_joined':datetime.datetime.now(),
+            'is_staff':1,
+            'is_supersuser':0,
+            'is_active':1,
         }
         serializer = StaffSerializer(data=data)
         if serializer.is_valid():

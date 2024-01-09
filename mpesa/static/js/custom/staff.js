@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    const csrfToken = $('meta[name=csrf-token]').attr('content');
+
     var table = $('#staffTable').DataTable({
         responsive: true,
         // scrollX: 200,
@@ -47,6 +49,34 @@ $(document).ready(function () {
             ]
         }
     });
+
+    $('#createStaffForm').submit(
+        function(e){
+            data = {
+                "first_name":$('#createStaffForm #first_name').val(),
+                "last_name": $('#createStaffForm #last_name').val(),
+                "email": $('#createStaffForm #email').val(),
+                "username": $('#createStaffForm #username').val(),
+                "password": $('#createStaffForm #password').val(),
+            }
+            $.ajax({
+                url: '/api/staff',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                success: function (response) {
+                    console.log(response);
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        }
+    );
 
 
 });

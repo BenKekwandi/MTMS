@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    const csrfToken = $('meta[name=csrf-token]').attr('content');
+
     var table = $('#branchesTable').DataTable({
         responsive: true,
         //scrollX: 200,
@@ -44,6 +46,31 @@ $(document).ready(function () {
             ]
         }
     });
+
+
+    $('#createBranchForm').submit(
+        function(e){
+            data = {
+                "location":$('#createBranchForm #location').val(),
+                "staff_name": $('#createBranchForm #staff_name').val(),
+            }
+            $.ajax({
+                url: '/api/branch',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        }
+    );
 
 
 });

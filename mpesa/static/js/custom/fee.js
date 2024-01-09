@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    const csrfToken = $('meta[name=csrf-token]').attr('content');
+
     var table = $('#feesTable').DataTable({
         responsive: true,
         //scrollX: 200,
@@ -44,6 +46,32 @@ $(document).ready(function () {
             ]
         }
     });
+
+
+    $('#createFeeForm').submit(
+        function(e){
+            data = {
+                "amount_from":$('#createFeeForm #amount_from').val(),
+                "amount_to": $('#createFeeForm #amount_to').val(),
+                "fee": $('#createFeeForm #fee').val(),
+            }
+            $.ajax({
+                url: '/api/fee',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        }
+    );
 
 
 });

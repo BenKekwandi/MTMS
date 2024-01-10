@@ -12,6 +12,28 @@
                     <h3 class="card-title text-white">All Transactions</h3>
                 </div>
 
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Transaction</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="post" id="deleteTransactionForm">
+                          {% csrf_token %}
+                          <div class="modal-body">
+                            <h3>Are you sure with this action?</h3>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-danger">Yes</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                </div>
+      
+
                 <div class="linkholder" class="border border-primary" style="margin:80px 30px 40px 30px">
                     <table class="display" id="transactionTable">
 

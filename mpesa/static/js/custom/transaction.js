@@ -1,4 +1,6 @@
-$(document).ready(function () {
+$(document).ready(function() {
+
+    const csrfToken = $('meta[name=csrf-token]').attr('content');
 
     var table = $('#transactionTable').DataTable({
         responsive: true,
@@ -7,10 +9,11 @@ $(document).ready(function () {
             selector: 'td:not(:first-child)',
             style: 'os'
         },
-        order: [[0, 'desc']],
+        order: [
+            [0, 'desc']
+        ],
         dom: 'Bfrtip',
-        buttons: [
-            {
+        buttons: [{
                 extend: 'copy',
                 className: 'btn'
             },
@@ -28,27 +31,27 @@ $(document).ready(function () {
             dataType: "json",
             type: "get",
 
-            error: function (request) {
+            error: function(request) {
                 alert("Error " + request);
             },
-            success: function (array) {
+            success: function(array) {
                 console.log(array);
                 var dataSet = [];
                 for (var i = 0; i < array.length; i++) {
                     var status = ''
-                    if(array[i].status==1){
+                    if (array[i].status == 1) {
                         status = '<span class="btn btn-success">Received<span>'
-                    }
-                    else{
+                    } else {
                         status = '<span class="btn btn-primary">Pending<span>'
                     }
-                    var actions =  `
+                    var actions = `
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Actions
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item bg-dark text-light" href="/transaction/${array[i].id}">View</a></li>
-                    <li><a class="dropdown-item bg-danger text-light" href="#">Delete</a></li>
+                    <li><a class="dropdown-item bg-success text-light" href="/transaction/${array[i].id}">View</a></li>
+                    <li><a class="dropdown-item bg-dark text-light" href="/transaction-update/${array[i].id}">Edit</a></li>
+                    <li><a class="dropdown-item bg-danger text-light delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-transaction="${array[i].id}" href="#">Delete</a></li>
                   </ul>
                     `
                     dataSet.push([
@@ -58,7 +61,6 @@ $(document).ready(function () {
                         array[i].sending_amount,
                         status,
                         actions
-
                     ]);
 
                 }
@@ -68,6 +70,35 @@ $(document).ready(function () {
                 { targets: '_all', className: 'text-left' }
             ]
         }
+    });
+
+
+    $(document).on('click', '.delete-btn', function(event) {
+        var transactionID = $(this).data('transaction');
+        console.log('clicked', 'transaction ID: ', transactionID)
+        $('#deleteModal').data('transaction_id', transactionID);
+    });
+
+    $('#deleteModal').on('shown.bs.modal', function() {
+        console.log("Delete Modal")
+        var transactionID = $(this).data('transaction_id');
+
+        $('#deleteModal #deleteTransactionForm').submit(function(e) {
+            $.ajax({
+                url: '/api/transaction/' + transactionID,
+                type: 'delete',
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                success: function(response) {
+                    console.log(response)
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
     });
 
 

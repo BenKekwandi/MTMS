@@ -8,10 +8,10 @@ urlpatterns = [
     path('fees',fees),
     path('reports',reports),
     path('transactions',transactions),
+    path('transaction-update/<int:id>',transactionEdit),
     path('transaction/<int:id>',transactionView),
-    path('settings', settings),
     path('staff',staff),
     path('profile',profile),
     path('branches',branches),
-    path('settings',settings)
+    path('settings',system_settings)
 ]

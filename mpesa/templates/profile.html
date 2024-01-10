@@ -9,35 +9,40 @@
           </div>
 
           <div class="linkholder" class="border border-primary" style="margin:8px 30px 40px 30px">
-            <form method="post" id="profileForm" class="p-5">
+            <form method="post" id="profileForm" class="p-5" enctype="multipart/form-data">
               {% csrf_token %}
 
               <div class="row">
                 <label class="form-label" for="first_name">First Name</label>
-                <input type="text" id="first_name" value="{{request.user.first_name}}" name="first_name" id="first_name" class="form-control" required />
+                <input type="text" id="first_name" value="{{ request.user.first_name }}" name="first_name" id="first_name" class="form-control" required />
               </div>
               <div class="row">
                 <label class="form-label" for="last_name">Last Name</label>
-                <input type="text" id="last_name" value="{{request.user.last_name}}" name="last_name" id="last_name" class="form-control" required />
+                <input type="text" id="last_name" value="{{ request.user.last_name }}" name="last_name" id="last_name" class="form-control" required />
               </div>
               <div class="row">
                 <label class="form-label" for="email">Email</label>
-                <input type="email" id="email" value="{{request.user.email}}" name="email" id="email" class="form-control" required />
+                <input type="email" id="email" value="{{ request.user.email }}" name="email" id="email" class="form-control" required />
               </div>
               <div class="row">
                 <label class="form-label" for="username">Username</label>
-                <input type="text" id="username" value="{{request.user.username}}" name="username" id="username" class="form-control" required />
+                <input type="text" id="username" value="{{ request.user.username }}" name="username" id="username" class="form-control" required />
               </div>
               <div class="row">
                 <label class="form-label" for="password">Password</label>
-                <input type="password" id="password" value="{{request.user.password}}" name="password" id="password" class="form-control" required />
+                <input type="text" id="password" value="" name="password" id="password" class="form-control" />
               </div>
               <div class="row">
-                <label class="form-label" for="profile_picture">Profile Picture</label>
-                <input type="file" id="profile_picture" value="{{request.user.profile_picture}}" name="profile_picture" id="profile_picture" class="form-control" required />
+                <label class="form-label" for="profile_picture">Profile Picture ({{ request.user.profile.profile_picture }})</label>
+                <input type="file" id="profile_picture" name="profile_picture" id="profile_picture" class="form-control" />
               </div>
-      
-                <hr>
+              <div class="row p-5">
+                {% if request.user.profile.profile_picture %}
+                  <img src="{{ request.user.profile.profile_picture.url }}" style="height:250px;width:350px;" alt="Image" class="" />
+                {% endif %}
+              </div>
+
+              <hr />
               <div class="">
                 <button type="submit" id="submitBtn" class="btn btn-primary">Update Profile</button>
               </div>

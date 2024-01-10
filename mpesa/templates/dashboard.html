@@ -1,7 +1,144 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-<h1>M-PESA</h1>
-<h2>MONEY TRANSFER MANAGEMENT SYSTEM</h2>
+<div class="row">
+
+    <!-- Left side columns -->
+    <div class="col-lg-12">
+        <div class="row">
+
+            <div class="col-xxl-4 col-md-6">
+                <div class="card info-card sales-card">
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">Pending Transactions <span>| Total</span></h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{data.pending_transactions}}</h6>
+                                <span class="text-success small pt-1 fw-bold">{{data.pending_transactions}}</span> <span
+                                    class="text-muted small pt-2 ps-1">pending transactions</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+                <div class="card info-card revenue-card">
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">Received Transactions <span>| total</span></h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{data.confirmed_transactions}}</h6>
+                                <span class="text-success small pt-1 fw-bold"></span>{{data.confirmed_transactions}}<span
+                                    class="text-muted small pt-2 ps-1">confirmed transactions</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-4 col-xl-12">
+
+                <div class="card info-card customers-card">
+
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">All Transactions <span>| total</span></h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-menu-button-wide"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{data.all_transactions}}</h6>
+                                <span class="text-danger small pt-1 fw-bold">{{data.all_transactions}}</span> <span
+                                    class="text-muted small pt-2 ps-1">transactions</span>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-xxl-6 col-xl-12">
+
+                <div class="card info-card customers-card">
+
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">Branches <span>| Total</span></h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-code-branch"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{data.number_of_branches}}</h6>
+                                <span class="text-danger small pt-1 fw-bold">{{data.number_of_branches}}</span>
+                                <span>branches</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-xxl-6 col-md-6">
+                <div class="card info-card revenue-card">
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">Staffs <span>| Total</span></h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{data.number_of_staffs}}</h6>
+                                <span
+                                    class="text-success small pt-1 fw-bold"></span>{{data.number_of_staffs}}<span
+                                    class="text-muted small pt-2 ps-1">Staff</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% comment %} <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">Daily<span> |Today</span></h5>
+
+                        <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+    </div>
+
 
 {% endblock %}

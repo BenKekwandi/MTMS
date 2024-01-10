@@ -32,8 +32,8 @@ $(document).ready(function () {
                         Actions
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a class="dropdown-item bg-dark text-light" data-bs-toggle="modal" data-bs-target="#editModal" href="#">Edit</a></li>
-                        <li><a class="dropdown-item bg-secondary text-light" href="#">Delete</a></li>
+                        <li><a class="dropdown-item bg-dark text-light edit-btn" data-bs-toggle="modal" data-bs-target="#editModal" data-fee="${array[i].id}" href="#">Edit</a></li>
+                        <li><a class="dropdown-item bg-secondary text-light delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-fee="${array[i].id}" href="#">Delete</a></li>
                       </ul>
                         `
                     ]);
@@ -46,6 +46,83 @@ $(document).ready(function () {
             ]
         }
     });
+
+    $(document).on('click', '.edit-btn', function (event) {
+        var feeID =  $(this).data('fee');
+        console.log('clicked','fee ID: ',feeID)
+        $('#editModal').data('fee_id', feeID);
+    });
+
+    $(document).on('click', '.delete-btn', function (event) {
+        var feeID =  $(this).data('fee');
+        console.log('clicked','fee ID: ',feeID)
+        $('#deleteModal').data('fee_id', feeID);
+    });
+
+    $('#deleteModal').on('shown.bs.modal', function () {
+        console.log("Delete Modal")
+        var feeID =  $(this).data('fee_id');
+
+        $('#deleteModal #deleteFeeForm').submit(function(e){
+            $.ajax({
+                url: '/api/fee/' + feeID,
+                type: 'delete',
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                success: function (response) {
+                    console.log(response)
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+
+
+    $('#editModal').on('shown.bs.modal', function () {
+        console.log("Edit Modal")
+        var feeID =  $(this).data('fee_id');
+        $.ajax({
+            url: '/api/fee/' + feeID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (feeData) {
+                console.log(feeData)
+                $('#editModal #amount_from').val(feeData.amount_from);
+                $('#editModal #amount_to').val(feeData.amount_to);
+                $('#editModal #fee').val(feeData.fee);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        $('#editModal #editFeeForm').submit(function(e){
+            data = {
+                'amount_from':$('#editModal #amount_from').val(),
+                'amount_to': $('#editModal #amount_to').val(),
+                'fee': $('#editModal #fee').val()
+            }
+            $.ajax({
+                url: '/api/fee/' + feeID,
+                type: 'put',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                success: function (response) {
+                    console.log(response)
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+
 
 
     $('#createFeeForm').submit(

@@ -181,7 +181,7 @@ class Transaction(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def get(self, request, *args, **kwargs):
-        transactions = TransactionModel.objects.filter()
+        transactions = TransactionModel.objects.filter(db_status=1)
         serializer = TransactionSerializer(transactions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -196,7 +196,8 @@ class TransactionDetail(APIView):
             'purpose': request.data.get('purpose'),
             'date_created':datetime.datetime.now(),
             'date_updated':datetime.datetime.now(),
-            'status':1
+            'status':1,
+            'db_status':1
         }
         transaction = TransactionModel.objects.get(id=id)
         serializer = TransactionSerializer(
@@ -210,7 +211,21 @@ class TransactionDetail(APIView):
         serializer = TransactionSerializer(transaction)
         return Response(serializer.data, status=status.HTTP_200_OK)
     def delete(self, request, id, *args, **kwargs):
-        pass
+        transaction = TransactionModel.objects.get(id=id)
+        if not transaction:
+            return Response(
+                {"res": "Object with transaction id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = {
+            'db_status': 0
+        }
+        serializer = TransactionSerializer(
+            instance=transaction, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class Staff(APIView):
     def post(self, request, *args, **kwargs):
@@ -228,6 +243,10 @@ class Staff(APIView):
         serializer = StaffSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+            profile = Profile()
+            profile.user_id=serializer.data['id']
+            profile.profile_picture=''
+            profile.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request, *args, **kwargs):
@@ -236,13 +255,16 @@ class Staff(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class StaffDetail(APIView):
-    def put(self, request, *args, **kwargs):
+    def put(self, request,id, *args, **kwargs):
+        password = request.user.password
+        if request.data.get('password'):
+            password = make_password(request.data.get('password'))
         data = {
             'first_name': request.data.get('first_name'),
             'last_name': request.data.get('last_name'),
             'email': request.data.get('email'),
             'username': request.data.get('username'),
-            'password': request.data.get('password'),
+            'password': password,
             'status':1
         }
         staff = User.objects.get(id=id)

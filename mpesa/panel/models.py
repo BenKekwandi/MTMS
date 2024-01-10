@@ -1,6 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User,AbstractUser
 
+
+class Profile(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    profile_picture=models.ImageField(default='default.jpg')
+    def __str__(self):
+        return f'{self.user.username} Profile'
 
 class BranchModel(models.Model):
     location = models.CharField(max_length=255)
@@ -27,6 +33,7 @@ class TransactionModel(models.Model):
     purpose = models.CharField(max_length=255)
     user_id = models.IntegerField()
     status = models.IntegerField()
+    db_status = models.IntegerField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now_add=True)
     class Meta:

@@ -10,6 +10,7 @@
 
           <div class="linkholder" class="border border-primary" style="margin:80px 30px 40px 30px">
             <h5 class="text-dark">Tracking Code : {{ tracking_code }}</h5>
+            <span id="transactionID" hidden>{{transaction.id}}</span>
             <form method="post" id="transactionForm" class="p-5">
               {% csrf_token %}
               <div class="pb-4">
@@ -52,7 +53,7 @@
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="receiver_last_name">Receiver Last Name</label>
-                  <input type="text" id="receiver_last_name" name="receiver_last_name" value="{{infos.last_name}}" id="receiver_last_name" class="form-control" readonly />
+                  <input type="text" id="receiver_last_name" name="receiver_last_name" value="{{infos.receiver_last_name}}" id="receiver_last_name" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="receiver_middle_name">Receiver Middle Name</label>
@@ -103,7 +104,7 @@
               <hr />
 
               <div class="">
-                <button type="submit" id="submitBtn" class="btn btn-primary">Receive</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary">Confirm Transaction</button>
               </div>
             </form>
           </div>

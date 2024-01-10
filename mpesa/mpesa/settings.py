@@ -92,9 +92,10 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 STATIC_URL = 'static/'
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,"static")
@@ -102,6 +103,9 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT= os.path.join(BASE_DIR,'static/img/App/')
 
+
 MEDIA_URL='/img/App/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

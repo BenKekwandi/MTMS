@@ -106,8 +106,8 @@ def profile(request):
         picture = request.FILES.get('profile_picture')
         profileImage = request.user.profile.profile_picture
         pw = request.user.password
-        if request.POST.get('password'):
-            pw = request.POST.get('password')
+        if request.POST.get('password')!='1234':
+            pw = make_password(request.POST.get('password'))
         if picture:
             file_name = picture.name
             destination_path = os.path.join(settings.MEDIA_ROOT, file_name)

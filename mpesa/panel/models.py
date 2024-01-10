@@ -30,3 +30,18 @@ class TransactionModel(models.Model):
     date_updated = models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table="transaction_list"
+        
+class TransactionInfoModel(models.Model):
+    transaction_id = models.IntegerField()
+    sender_first_name = models.CharField(max_length=255)
+    sender_last_name = models.CharField(max_length=255)
+    sender_middle_name = models.CharField(max_length=255)
+    sender_contact = models.CharField(max_length=255)
+    sender_address = models.CharField(max_length=255)
+    receiver_first_name = models.CharField(max_length=255)
+    receiver_last_name = models.CharField(max_length=255)
+    receiver_middle_name = models.CharField(max_length=255)
+    receiver_contact = models.CharField(max_length=255)
+    receiver_address = models.CharField(max_length=255)
+    class Meta:
+        db_table = 'transaction_info'

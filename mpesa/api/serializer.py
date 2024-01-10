@@ -12,6 +12,11 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = TransactionModel
         fields = '__all__'
         
+class TransactionInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransactionInfoModel
+        fields = '__all__'
+        
 class FeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeeModel

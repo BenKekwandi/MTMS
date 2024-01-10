@@ -7,6 +7,17 @@ from django.contrib.auth.models import User,Group
 from .serializer import *
 import datetime
 from django.contrib.auth.hashers import make_password
+import random
+import string
+from django.forms.models import model_to_dict
+
+
+def generate_random_string():
+    upper_case_letters = ''.join(random.choices(string.ascii_uppercase, k=3))
+    dash = '-'
+    digits = ''.join(random.choices(string.digits, k=8))
+    random_string = f"{upper_case_letters}{dash}{digits}"
+    return random_string
 
 class SendingAction(APIView):
     def post(self, request, *args, **kwargs):
@@ -55,7 +66,14 @@ class Report(APIView):
     def post(self, request, *args, **kwargs):
         pass
     def get(self, request, *args, **kwargs):
-        pass
+        transactions = TransactionModel.objects.filter().values()
+        for transaction in transactions:
+            operator = User.objects.get(id=transaction['user_id'])
+            transaction['operator']=operator.first_name+' '+operator.last_name
+            branch = BranchModel.objects.get(id=transaction['branch_id'])
+            transaction['branch']= branch.location
+            transaction['infos'] = model_to_dict(TransactionInfoModel.objects.get(transaction_id=transaction['id']))
+        return Response(transactions, status=status.HTTP_200_OK)
 class Branch(APIView):
     def post(self, request, *args, **kwargs):
         data = {
@@ -90,22 +108,43 @@ class BranchDetail(APIView):
         pass
 class Transaction(APIView):
     def post(self, request, *args, **kwargs):
+        code = generate_random_string()
         data = {
-            'tracking_code': request.data.get('tracking_code'),
+            'tracking_code': code,
             'branch_id': request.data.get('branch_id'),
-            'user_id': request.data.get('user_id'),
+            'user_id': request.user.id,
             'fee': request.data.get('fee'),
             'sending_amount': request.data.get('sending_amount'),
             'purpose': request.data.get('purpose'),
             'date_created':datetime.datetime.now(),
             'date_updated':datetime.datetime.now(),
-            'status':1
+            'status':0
+        }
+        infoData ={
+            'sender_first_name': request.data.get('sender_first_name'),
+            'sender_last_name': request.data.get('sender_last_name'),
+            'sender_middle_name': request.data.get('sender_middle_name'),
+            'sender_contact': request.data.get('sender_contact'),
+            'sender_address': request.data.get('sender_address'),
+            'receiver_first_name': request.data.get('receiver_first_name'),
+            'receiver_last_name': request.data.get('receiver_last_name'),
+            'receiver_middle_name': request.data.get('receiver_middle_name'),
+            'receiver_contact': request.data.get('receiver_contact'),
+            'receiver_address': request.data.get('receiver_address'),
+            
         }
         serializer = TransactionSerializer(data=data)
+        infoSerializer = TransactionInfoSerializer(data=infoData)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            infoData['transaction_id'] = serializer.data['id']
+            infoSerializer = TransactionInfoSerializer(data=infoData)
+            if infoSerializer.is_valid():
+                infoSerializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(infoSerializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     def get(self, request, *args, **kwargs):
         transactions = TransactionModel.objects.filter()
         serializer = TransactionSerializer(transactions, many=True)

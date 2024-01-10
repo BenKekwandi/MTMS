@@ -12,4 +12,5 @@ urlpatterns = [
     path('transaction/<int:id>',TransactionDetail.as_view()),
     path('staff',Staff.as_view()),
     path('staff/<int:id>',StaffDetail.as_view()),
+    path('report',Report.as_view())
 ]

@@ -1,42 +1,42 @@
 {% extends 'layout.html' %}
-{% load static %}
 {% block content %}
   <div class="pageholder">
     <div class="row">
       <div class="col-md-12">
         <div class="card border border-primary bg bg-dark-light">
           <div class="card-header bg-primary">
-            <h3 class="card-title text-white">Sending Money</h3>
+            <h3 class="card-title text-white">Transaction : {{ tracking_code }}</h3>
           </div>
 
           <div class="linkholder" class="border border-primary" style="margin:80px 30px 40px 30px">
+            <h5 class="text-dark">Tracking Code : {{ tracking_code }}</h5>
             <form method="post" id="transactionForm" class="p-5">
-                {% csrf_token %}
+              {% csrf_token %}
               <div class="pb-4">
                 <h4>Sender Details</h4>
               </div>
               <div class="row pl-4 pr-4 mb-3">
                 <div class="col-md-4">
                   <label class="form-label" for="sender_first_name">Sender First Name</label>
-                  <input type="text" id="sender_first_name" name="sender_first_name" id="sender_first_name" class="form-control" required />
+                  <input type="text" id="sender_first_name" name="sender_first_name" value="{{ infos.sender_first_name }}" id="sender_first_name" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="sender_last_name">Sender Last Name</label>
-                  <input type="text" id="sender_last_name" name="sender_last_name" id="sender_last_name" class="form-control" required />
+                  <input type="text" id="sender_last_name" name="sender_last_name" value="{{ infos.sender_last_name }}" id="sender_last_name" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="sender_middle_name">Sender Middle Name</label>
-                  <input type="text" id="sender_middle_name" name="sender_middle_name" id="sender_middle_name" class="form-control" required />
+                  <input type="text" id="sender_middle_name" name="sender_middle_name" value="{{ infos.sender_middle_name }}" id="sender_middle_name" class="form-control" readonly />
                 </div>
               </div>
               <div class="row pl-4 pr-4 mb-5">
                 <div class="col-md-6">
                   <label class="form-label" for="sender_contact">Sender Contact</label>
-                  <input type="text" id="sender_contact" name="sender_contact" id="sender_contact" class="form-control" required />
+                  <input type="text" id="sender_contact" name="sender_contact" id="sender_contact" value="{{ infos.sender_contact }}" class="form-control" readonly />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" for="sender_address">Sender Address</label>
-                  <input type="text" id="sender_address" name="sender_address" id="sender_address" class="form-control" required />
+                  <input type="text" id="sender_address" name="sender_address" value="{{ infos.sender_address }}" id="sender_address" class="form-control" readonly />
                 </div>
               </div>
 
@@ -48,25 +48,25 @@
               <div class="row pl-4 pr-4 mb-3">
                 <div class="col-md-4">
                   <label class="form-label" for="receiver_first_name">Receiver First Name</label>
-                  <input type="text" id="receiver_first_name" name="receiver_first_name" id="receiver_first_name" class="form-control" required />
+                  <input type="text" id="receiver_first_name" name="receiver_first_name" value="{{ infos.receiver_first_name }}" id="receiver_first_name" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="receiver_last_name">Receiver Last Name</label>
-                  <input type="text" id="receiver_last_name" name="receiver_last_name" id="receiver_last_name" class="form-control" required />
+                  <input type="text" id="receiver_last_name" name="receiver_last_name" value="{{ infos.last_name }}" id="receiver_last_name" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="receiver_middle_name">Receiver Middle Name</label>
-                  <input type="text" id="receiver_middle_name" name="receiver_middle_name" id="receiver_middle_name" class="form-control" required />
+                  <input type="text" id="receiver_middle_name" name="receiver_middle_name" value="{{ infos.receiver_middle_name }}" id="receiver_middle_name" class="form-control" readonly />
                 </div>
               </div>
               <div class="row pl-4 pr-4 mb-5">
                 <div class="col-md-6">
                   <label class="form-label" for="receiver_contact">Receiver Contact</label>
-                  <input type="text" id="receiver_contact" name="receiver_contact" id="receiver_contact" class="form-control" required />
+                  <input type="text" id="receiver_contact" name="receiver_contact" value="{{ infos.receiver_contact }}" id="receiver_contact" class="form-control" readonly />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" for="receiver_address">Receiver Address</label>
-                  <input type="text" id="receiver_address" name="receiver_address" id="receiver_address" class="form-control" required />
+                  <input type="text" id="receiver_address" name="receiver_address" value="{{ infos.receiver_address }}" id="receiver_address" class="form-control" readonly />
                 </div>
               </div>
 
@@ -78,32 +78,32 @@
               <div class="row pl-4 pr-4 mb-3">
                 <div class="col-md-4">
                   <label class="form-label" for="sending_amount">Amount To Send</label>
-                  <input type="number" id="sending_amount" name="sending_amount" id="sending_amount" class="form-control" required />
+                  <input type="number" id="sending_amount" name="sending_amount" value="{{ transaction.sending_amount }}" id="sending_amount" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="fee">Transaction Fee</label>
-                  <input type="number" id="fee" name="fee" id="fee" class="form-control" readonly/>
+                  <input type="number" id="fee" name="fee" value="{{ transaction.fee }}" id="fee" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="payable_amount">Payable Amount</label>
-                  <input type="number" id="payable_amount" name="payable_amount" id="payable_amount" class="form-control" readonly/>
+                  <input type="number" id="payable_amount" name="payable_amount" value="{{ transaction.payable_amount }}" id="payable_amount" class="form-control" readonly />
                 </div>
               </div>
               <div class="row pl-4 pr-4 mb-5">
                 <div class="col-md-6">
                   <label class="form-label" for="purpose">Purpose/Remarks</label>
-                  <input type="text" id="purpose" name="purpose" id="purpose" class="form-control" required />
+                  <input type="text" id="purpose" name="purpose" value="{{ transaction.purpose }}" id="purpose" class="form-control" readonly />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" for="branch_id">Branch</label>
-                  <select type="text" id="branch_id" name="branch_id" id="branch_id" class="form-select" required></select>
+                  <input type="text" id="branch_id" name="branch_id" value="{{ transaction.branch }}" id="branch_id" class="form-control" readonly />
                 </div>
               </div>
 
               <hr />
 
               <div class="">
-                <button type="submit" id="submitBtn" class="btn btn-primary">Save</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary">Receive</button>
               </div>
             </form>
           </div>
@@ -111,6 +111,4 @@
       </div>
     </div>
   </div>
-
-  <script src="{% static 'js/custom/send.js' %}"></script>
 {% endblock %}

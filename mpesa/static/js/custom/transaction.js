@@ -8,6 +8,21 @@ $(document).ready(function () {
             style: 'os'
         },
         order: [[0, 'desc']],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                className: 'btn'
+            },
+            {
+                extend: 'excel',
+                className: 'btn'
+            },
+            {
+                extend: 'print',
+                className: 'btn'
+            }
+        ],
         ajax: {
             url: '/api/transaction',
             dataType: "json",
@@ -20,17 +35,30 @@ $(document).ready(function () {
                 console.log(array);
                 var dataSet = [];
                 for (var i = 0; i < array.length; i++) {
+                    var status = ''
+                    if(array[i].status==1){
+                        status = '<span class="btn btn-success">Received<span>'
+                    }
+                    else{
+                        status = '<span class="btn btn-primary">Pending<span>'
+                    }
+                    var actions =  `
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Actions
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item bg-dark text-light" href="/transaction/${array[i].id}">View</a></li>
+                    <li><a class="dropdown-item bg-danger text-light" href="#">Delete</a></li>
+                  </ul>
+                    `
                     dataSet.push([
-                    array[i].id,
-                        array[i].tracking_code,
-                        array[i].branch_id,
-                        array[i].sending_amount,
-                        array[i].fee,
-                        array[i].purpose,
-                        array[i].user_id,
-                        array[i].status,
+                        array[i].id,
                         array[i].date_created,
-                        'Actions'
+                        array[i].tracking_code,
+                        array[i].sending_amount,
+                        status,
+                        actions
+
                     ]);
 
                 }

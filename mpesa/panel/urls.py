@@ -4,10 +4,11 @@ from .views import *
 urlpatterns = [
     path('', dashboard),
     path('send',send),
-    path('receive',receive),
+    path('receive/<str:tk_code>',receive),
     path('fees',fees),
     path('reports',reports),
     path('transactions',transactions),
+    path('transaction/<int:id>',transactionView),
     path('settings', settings),
     path('staff',staff),
     path('profile',profile),

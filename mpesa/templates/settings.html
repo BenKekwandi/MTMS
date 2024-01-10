@@ -1,5 +1,44 @@
 {% extends 'layout.html' %}
 {% block content %}
+  <div class="pageholder">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card border border-primary bg bg-dark-light">
+          <div class="card-header bg-primary">
+            <h3 class="card-title text-white">System Settings</h3>
+          </div>
 
+          <div class="linkholder" class="border border-primary" style="margin:8px 30px 40px 30px">
+            <form method="post" id="profileForm" class="p-5">
+              {% csrf_token %}
 
+              <div class="row">
+                <label class="form-label" for="system_name">System Name</label>
+                <input type="text" id="system_name" value="" name="system_name" id="system_name" class="form-control" required />
+              </div>
+
+              <div class="row">
+                <label class="form-label" for="system_short_name">System Short Name</label>
+                <input type="text" id="system_short_name" value="" name="system_short_name" id="system_short_name" class="form-control" required />
+              </div>
+
+              <div class="row">
+                <label class="form-label" for="logo">Logo</label>
+                <input type="file" id="logo" value="" name="logo" id="logo" class="form-control" required />
+              </div>
+
+              <div class="row">
+                <label class="form-label" for="cover">Cover</label>
+                <input type="file" id="cover" value="" name="cover" id="cover" class="form-control" required />
+              </div>
+                <hr>
+              <div class="">
+                <button type="submit" id="submitBtn" class="btn btn-primary">Update Settings</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

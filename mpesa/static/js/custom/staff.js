@@ -11,7 +11,7 @@ $(document).ready(function () {
         },
         order: [[0, 'desc']],
         ajax: {
-            url: 'api/staff',
+            url: '/api/staff',
             dataType: "json",
             type: "get",
 

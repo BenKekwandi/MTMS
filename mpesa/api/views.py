@@ -19,22 +19,14 @@ def generate_random_string():
     random_string = f"{upper_case_letters}{dash}{digits}"
     return random_string
 
-class SendingAction(APIView):
-    def post(self, request, *args, **kwargs):
-        pass
-    def get(self, request, *args, **kwargs):
-        pass
-class ReceivingAction(APIView):
-    def post(self, request, *args, **kwargs):
-        pass
-    def get(self, request, *args, **kwargs):
-        pass
+
 class Fee(APIView):
     def post(self, request, *args, **kwargs):
         data = {
             'amount_from': request.data.get('amount_from'),
             'amount_to': request.data.get('amount_to'),
             'fee': request.data.get('fee'),
+            'status':1,
             'date_created':datetime.datetime.now(),
         }
         serializer = FeeSerializer(data=data)
@@ -43,7 +35,7 @@ class Fee(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request, *args, **kwargs):
-        fees = FeeModel.objects.filter()
+        fees = FeeModel.objects.filter(status=1)
         serializer = FeeSerializer(fees, many = True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -53,14 +45,36 @@ class FeeDetail(APIView):
             'amount_from': request.data.get('amount_from'),
             'amount_to': request.data.get('amount_to'),
             'fee': request.data.get('fee'),
+            'status':1,
             'date_created':datetime.datetime.now(),
         }
+        fee = FeeModel.objects.get(id=id)
+        serializer = FeeSerializer(
+            instance=fee, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request, id, *args, **kwargs):
         fee = FeeModel.objects.get(id=id)
         serializer = FeeSerializer(fee)
         return Response(serializer.data, status=status.HTTP_200_OK)
     def delete(self, request, id, *args, **kwargs):
-        pass
+        fee = FeeModel.objects.get(id=id)
+        if not fee:
+            return Response(
+                {"res": "Object with fee id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = {
+            'status': 0
+        }
+        serializer = FeeSerializer(
+            instance=fee, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Report(APIView):
     def post(self, request, *args, **kwargs):
@@ -88,7 +102,7 @@ class Branch(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request, *args, **kwargs):
-        branches = BranchModel.objects.filter()
+        branches = BranchModel.objects.filter(status=1)
         serializer = BranchSerializer(branches, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -100,12 +114,33 @@ class BranchDetail(APIView):
             'date_created':datetime.datetime.now(),
             'status':1
         }
+        branch = BranchModel.objects.get(id=id)
+        serializer = BranchSerializer(
+            instance=branch, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request, id, *args, **kwargs):
         branch = BranchModel.objects.get(id=id)
         serializer = BranchSerializer(branch)
         return Response(serializer.data, status=status.HTTP_200_OK)
     def delete(self, request, id, *args, **kwargs):
-        pass
+        branch = BranchModel.objects.get(id=id)
+        if not branch:
+            return Response(
+                {"res": "Object with Branch id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = {
+            'status': 0
+        }
+        serializer = BranchSerializer(
+            instance=branch, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class Transaction(APIView):
     def post(self, request, *args, **kwargs):
         code = generate_random_string()
@@ -163,6 +198,13 @@ class TransactionDetail(APIView):
             'date_updated':datetime.datetime.now(),
             'status':1
         }
+        transaction = TransactionModel.objects.get(id=id)
+        serializer = TransactionSerializer(
+            instance=transaction, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request, id, *args, **kwargs):
         transaction = TransactionModel.objects.get(id=id)
         serializer = TransactionSerializer(transaction)
@@ -189,7 +231,7 @@ class Staff(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request, *args, **kwargs):
-        staffs = User.objects.filter()
+        staffs = User.objects.filter(is_active=1)
         serializer = StaffSerializer(staffs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -203,7 +245,30 @@ class StaffDetail(APIView):
             'password': request.data.get('password'),
             'status':1
         }
+        staff = User.objects.get(id=id)
+        serializer = StaffSerializer(
+            instance=staff, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request,id, *args, **kwargs):
         staff = User.objects.get(id=id)
         serializer = StaffSerializer(staff)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def delete(self, request,id, *args, **kwargs):
+        staff = User.objects.get(id=id)
+        if not staff:
+            return Response(
+                {"res": "Object with staff id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = {
+            'is_active': 0
+        }
+        serializer = StaffSerializer(
+            instance=staff, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

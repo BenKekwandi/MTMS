@@ -14,6 +14,7 @@ class FeeModel(models.Model):
     amount_from = models.FloatField()
     amount_to = models.FloatField()
     fee = models.FloatField()
+    status = models.IntegerField()
     date_created = models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table = 'fee_list'

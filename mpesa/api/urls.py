@@ -2,8 +2,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('send', SendingAction.as_view()),
-    path('receive', ReceivingAction.as_view()),
     path('fee',Fee.as_view()),
     path('fee/<int:id>',FeeDetail.as_view()),
     path('branch',Branch.as_view()),

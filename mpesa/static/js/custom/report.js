@@ -10,7 +10,7 @@ $(document).ready(function() {
         order: [
             [0, 'desc']
         ],
-        dom: 'Bfrtip',
+        dom: '<"top"fB>rt<"bottom"lip>',
         buttons: [{
                 extend: 'copy',
                 className: 'btn'
@@ -43,18 +43,18 @@ $(document).ready(function() {
                         status = '<span class="btn btn-primary">Pending<span>'
                     }
                     var transactionInfo = `<div>
-                    Processed By:<span style="font-weight:bolder"> ${array[i].operator}</span>
+                    <span style="font-weight:bolder">Processed By</span> : ${array[i].operator},
                     </div>
                     <div>
-                    Processed At:<span style="font-weight:bolder"> ${array[i].branch}</span>
+                    <span style="font-weight:bolder">Processed At</span> : ${array[i].branch},
                     </div>
                     `
                     if (array[i].status == 1) {
                         transactionInfo += `<div>
-                        Received At:<span style="font-weight:bolder"> ${array[i].received_branch}</span>
+                        <span style="font-weight:bolder">Received At</span> : ${array[i].received_branch},
                         </div>
                         <div>
-                        Processed(R) By:<span style="font-weight:bolder"> ${array[i].received_user}</span>
+                        <span style="font-weight:bolder">Processed(R) By</span> : ${array[i].received_user}
                         </div>`
                     }
 
@@ -65,8 +65,8 @@ $(document).ready(function() {
                     var receiver = array[i].infos['receiver_first_name'] + ' ' + array[i].infos['receiver_last_name']
                     var sender = array[i].infos['sender_first_name'] + ' ' + array[i].infos['sender_last_name']
                     var client = `
-                    <div>Sender: <span style="font-weight:bolder">${sender}</span></div>
-                    <div>Receiver: <span style="font-weight:bolder">${receiver}</span></div>
+                    <div><span style="font-weight:bolder">Sender</span> : ${sender},</div>
+                    <div><span style="font-weight:bolder">Receiver</span> : ${receiver}</div>
                     `
                     dataSet.push([
                         array[i].id,

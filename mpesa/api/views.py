@@ -162,6 +162,7 @@ class Transaction(APIView):
             'purpose': request.data.get('purpose'),
             'date_created':datetime.datetime.now(),
             'date_updated':datetime.datetime.now(),
+            'db_status':1,
             'status':0
         }
         infoData ={
@@ -174,12 +175,7 @@ class Transaction(APIView):
             'receiver_last_name': request.data.get('receiver_last_name'),
             'receiver_middle_name': request.data.get('receiver_middle_name'),
             'receiver_contact': request.data.get('receiver_contact'),
-            'receiver_address': request.data.get('receiver_address'),
-            
-            'received_branch_id':request.data.get('received_branch_id'),
-            'presented_id_type':request.data.get('presented_id_type'),
-            'presented_id_number':request.data.get('presented_id_number'),
-            'received_user_id':request.user.id,
+            'receiver_address': request.data.get('receiver_address')
             
         }
         serializer = TransactionSerializer(data=data)

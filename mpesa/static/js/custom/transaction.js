@@ -12,7 +12,7 @@ $(document).ready(function() {
         order: [
             [0, 'desc']
         ],
-        dom: 'Bfrtip',
+        dom: '<"top"fB>rt<"bottom"lip>',
         buttons: [{
                 extend: 'copy',
                 className: 'btn'

@@ -24,6 +24,8 @@ def dashboard(request):
 @login_required(login_url='/./auth/login')
 def send(request):
     page_title = 'Send'
+    if request.method == 'POST':
+        return redirect('/transactions')
     return render(request,"send.html", {'page_title':page_title})
 
 @login_required(login_url='/./auth/login')

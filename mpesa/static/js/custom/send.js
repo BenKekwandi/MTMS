@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     const csrfToken = $('meta[name=csrf-token]').attr('content');
 
@@ -6,32 +6,31 @@ $(document).ready(function () {
         url: '/api/branch',
         type: 'GET',
         contentType: 'application/json',
-        success: function (response) {
+        success: function(response) {
             var selectElement = $('#branch_id');
-            response.forEach(function (branch) {
+            response.forEach(function(branch) {
                 var optionText = branch.location + ' - ' + branch.staff_name;
                 var option = $('<option>').val(branch.id).text(optionText);
                 selectElement.append(option);
             });
         },
-        error: function (error) {
+        error: function(error) {
             console.error('Error:', error);
         }
     });
 
-    $('#sending_amount').on('input',function () {
+    $('#sending_amount').on('input', function() {
         var sendingAmount = parseFloat($('#sending_amount').val());
+
         function getFee(amount) {
             $.ajax({
                 url: '/api/fee',
                 type: 'GET',
                 contentType: 'application/json',
-                success: function (response) {
+                success: function(response) {
                     var f = 0;
-                    response.forEach(function (item)
-                    {
-                        if (amount >= item.amount_from && amount <= item.amount_to)
-                        {
+                    response.forEach(function(item) {
+                        if (amount >= item.amount_from && amount <= item.amount_to) {
                             f = item.fee;
                         }
                     });
@@ -41,20 +40,18 @@ $(document).ready(function () {
                     $('#fee').val(fee);
                     $('#payable_amount').val(payableAmount);
                 },
-                error: function (error) {
+                error: function(error) {
                     console.log('Error:', error);
                 }
             });
         }
         getFee(sendingAmount);
     });
-    
+
 
 
     $('#transactionForm').submit(
-        function (e) {
-            e.preventDefault();
-            alert("Sending Form submission")
+        function(e) {
             data = {
                 "sender_first_name": $('#transactionForm #sender_first_name').val(),
                 "sender_last_name": $('#transactionForm #sender_last_name').val(),
@@ -79,10 +76,10 @@ $(document).ready(function () {
                 headers: {
                     'X-CSRFToken': csrfToken,
                 },
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                 },
-                error: function (error) {
+                error: function(error) {
                     console.log(error);
                 },
             });

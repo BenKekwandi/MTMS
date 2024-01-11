@@ -51,5 +51,11 @@ class TransactionInfoModel(models.Model):
     receiver_middle_name = models.CharField(max_length=255)
     receiver_contact = models.CharField(max_length=255)
     receiver_address = models.CharField(max_length=255)
+    
+    received_branch_id = models.IntegerField()
+    received_user_id = models.IntegerField()
+    presented_id_type = models.CharField(max_length=255)
+    presented_id_number = models.CharField(max_length=255)
+    
     class Meta:
         db_table = 'transaction_info'

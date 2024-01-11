@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load static %}
 {% block content %}
   <div class="pageholder">
     <div class="row">
@@ -102,6 +103,27 @@
               </div>
 
               <hr />
+              <div class="pb-4 pt-4">
+                <h4>Reception Details</h4>
+              </div>
+              <div class="row pl-4 pr-4 pt-1 mb-2">
+                <div class="col-md-6">
+                  <label class="form-label" for="presented_id_type">Presented ID Type</label>
+                  <input type="text" id="presented_id_type" name="presented_id_type" id="presented_id_type" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="presented_id_number">Presented ID Number</label>
+                  <input type="text" id="presented_id_number" name="presented_id_number" id="presented_id_number" class="form-control" required />
+                </div>
+              </div>
+              <div class="row pl-4 pr-4 pt-1 mb-5">
+                <div class="col-md-12">
+                  <label class="form-label" for="received_branch">Receiving Branch</label>
+                  <select type="text" id="received_branch" name="received_branch" id="received_branch" class="form-select" required>
+
+                  </select>
+                </div>
+              </div>
 
               <div class="">
                 <button type="submit" id="submitBtn" class="btn btn-primary">Confirm Transaction</button>
@@ -112,4 +134,6 @@
       </div>
     </div>
   </div>
+
+  <script src="{% static 'js/custom/receive.js' %}"></script>
 {% endblock %}

@@ -5,11 +5,25 @@
       <div class="col-md-12">
         <div class="card border border-primary bg bg-dark-light">
           <div class="card-header bg-primary">
-            <h3 class="card-title text-white">Transaction : {{ transaction.tracking_code }}</h3>
+            <h3 class="card-title text-white">
+              Transaction : {{ transaction.tracking_code }}
+              {% if transaction.status == 1 %}
+                <span class="btn btn-success text-light">Received</span>
+              {% else %}
+                <span class="btn btn-warning text-light">Pending</span>
+              {% endif %}
+            </h3>
           </div>
 
           <div class="linkholder" class="border border-primary" style="margin:80px 30px 40px 30px">
-            <h5 class="text-dark">Tracking Code : {{ transaction.tracking_code }}</h5>
+            <h5 class="text-dark">
+              Tracking Code : {{ transaction.tracking_code }}
+              {% if transaction.status == 1 %}
+                <span><i class="fa-solid fa-thumbs-up text-success"></i></span>
+              {% else %}
+                <span><i class="fa-solid fa-clock text-warning"></i></span>
+              {% endif %}
+            </h5>
             <form method="post" id="transactionForm" class="p-5">
               {% csrf_token %}
               <div class="pb-4">
@@ -101,6 +115,28 @@
               </div>
 
               <hr />
+
+              {% if transaction.status == 1 %}
+                <div class="pb-4 pt-4">
+                  <h4>Reception Details</h4>
+                </div>
+                <div class="row pl-4 pr-4 pt-1 mb-2">
+                  <div class="col-md-6">
+                    <label class="form-label" for="presented_id_type">Presented ID Type</label>
+                    <input type="text" id="presented_id_type" name="presented_id_type" value="{{ infos.presented_id_type }}" id="presented_id_type" class="form-control" readonly />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" for="presented_id_number">Presented ID Number</label>
+                    <input type="text" id="presented_id_number" name="presented_id_number" value="{{ infos.presented_id_number }}" id="presented_id_number" class="form-control" readonly />
+                  </div>
+                </div>
+                <div class="row pl-4 pr-4 pt-1 mb-5">
+                  <div class="col-md-12">
+                    <label class="form-label" for="received_branch">Receiving Branch</label>
+                    <input type="text" id="received_branch" name="received_branch" value="{{ infos.branch }}" id="received_branch" class="form-control" readonly />
+                  </div>
+                </div>
+              {% endif %}
 
               <div class="">
                 <button type="submit" id="submitBtn" onClick="javascript:window.print()" class="btn btn-success">Print</button>

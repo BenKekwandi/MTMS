@@ -78,15 +78,15 @@
               <div class="row pl-4 pr-4 mb-3">
                 <div class="col-md-4">
                   <label class="form-label" for="sending_amount">Amount To Send</label>
-                  <input type="number" id="sending_amount" name="sending_amount" value="{{ transaction.sending_amount }}" id="sending_amount" class="form-control" required />
+                  <input type="number" id="sending_amount" name="sending_amount" value="{{ transaction.sending_amount }}" id="sending_amount" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="fee">Transaction Fee</label>
-                  <input type="number" id="fee" name="fee" value="{{ transaction.fee }}" id="fee" class="form-control" required />
+                  <input type="number" id="fee" name="fee" value="{{ transaction.fee }}" id="fee" class="form-control" readonly />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label" for="payable_amount">Payable Amount</label>
-                  <input type="number" id="payable_amount" name="payable_amount" value="{{ transaction.payable_amount }}" id="payable_amount" class="form-control" required />
+                  <input type="number" id="payable_amount" name="payable_amount" value="{{ transaction.payable_amount }}" id="payable_amount" class="form-control" readonly />
                 </div>
               </div>
               <div class="row pl-4 pr-4 mb-5">
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" for="branch_id">Branch</label>
-                  <input type="text" id="branch_id" name="branch_id" value="{{ transaction.branch }}" id="branch_id" class="form-control" required />
+                  <input type="text" id="branch_id" name="branch_id" value="{{ transaction.branch }}" id="branch_id" class="form-control" readonly/>
                 </div>
               </div>
 

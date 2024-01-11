@@ -87,6 +87,15 @@ class Report(APIView):
             branch = BranchModel.objects.get(id=transaction['branch_id'])
             transaction['branch']= branch.location
             transaction['infos'] = model_to_dict(TransactionInfoModel.objects.get(transaction_id=transaction['id']))
+            transaction['received_branch']=''
+            transaction['received_user']=''
+            try:
+                if transaction['status']==1:
+                    transaction['received_branch']=BranchModel.objects.get(id=transaction['infos']['received_branch_id']).location
+                    user = User.objects.get(id=transaction['infos']['received_user_id'])
+                    transaction['received_user']=user.first_name+' '+user.last_name
+            except:
+                pass
         return Response(transactions, status=status.HTTP_200_OK)
 class Branch(APIView):
     def post(self, request, *args, **kwargs):
@@ -167,13 +176,18 @@ class Transaction(APIView):
             'receiver_contact': request.data.get('receiver_contact'),
             'receiver_address': request.data.get('receiver_address'),
             
+            'received_branch_id':request.data.get('received_branch_id'),
+            'presented_id_type':request.data.get('presented_id_type'),
+            'presented_id_number':request.data.get('presented_id_number'),
+            'received_user_id':request.user.id,
+            
         }
         serializer = TransactionSerializer(data=data)
         infoSerializer = TransactionInfoSerializer(data=infoData)
         if serializer.is_valid():
             serializer.save()
             infoData['transaction_id'] = serializer.data['id']
-            infoSerializer = TransactionInfoSerializer(data=infoData)
+            infoSerializer = TransactionInfoSerializer(data=infoData, partial=True)
             if infoSerializer.is_valid():
                 infoSerializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)

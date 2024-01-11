@@ -39,6 +39,12 @@ def receive(request, tk_code):
         TransactionModel.objects.filter(id=transaction['id']).update(
             status = 1
         )
+        TransactionInfoModel.objects.filter(transaction_id=transaction['id']).update(
+            presented_id_type=request.POST.get('presented_id_type'),
+            presented_id_number=request.POST.get('presented_id_number'),
+            received_user_id=request.user.id,
+            received_branch_id=request.POST.get('received_branch')
+        )
         return redirect('/transactions')
     return render(request,"receive.html", {'page_title':page_title,'tracking_code':tracking_code,'transaction':transaction,'infos':infos})
 
@@ -55,6 +61,12 @@ def transactionView(request, id):
     transaction['payable_amount'] = transaction['fee']+transaction['sending_amount']
     branch = BranchModel.objects.get(id=transaction['branch_id'])
     transaction['branch'] = branch.location+' - '+branch.staff_name
+    try:
+        if transaction['status']==1:
+            branch = BranchModel.objects.get(id=infos['received_branch_id'])
+            infos['branch'] = branch.location+' - '+branch.staff_name
+    except:
+        pass
     return render(request, "viewTransaction.html", {'page_title':page_title,'transaction':transaction, 'infos':infos})
 
 @login_required(login_url='/./auth/login')
